@@ -1,0 +1,5 @@
+streamlit
+docxtpl
+num2words
+openai
+python-docx
