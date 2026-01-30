@@ -1,11 +1,4 @@
-# --- 🔐 LOGIN SYSTEM ---
-# This stops strangers from using your API key
-if "APP_PASSWORD" in st.secrets:
-    password = st.sidebar.text_input("Enter Password to Login", type="password")
-    if password != st.secrets["APP_PASSWORD"]:
-        st.warning("🔒 Please enter the correct password to access the bot.")
-        st.stop()  # STOPS the code here. Nothing below runs.
-import streamlit as st
+import streamlit as st  # <--- 1. IMPORTS FIRST
 from docxtpl import DocxTemplate
 from num2words import num2words
 import datetime
@@ -15,9 +8,16 @@ import base64
 from openai import OpenAI
 import json
 
-# --- PAGE CONFIG ---
+# --- 2. PAGE CONFIG SECOND ---
 st.set_page_config(page_title="Agency Bot / 中介助手", page_icon="🏠", layout="wide")
 st.title("🏠 Smart Contract Bot / 智能合同助手")
+
+# --- 3. LOGIN CODE THIRD ---
+if "APP_PASSWORD" in st.secrets:
+    password = st.sidebar.text_input("Enter Password to Login", type="password")
+    if password != st.secrets["APP_PASSWORD"]:
+        st.warning("🔒 Please enter the correct password to access the bot.")
+        st.stop()
 
 # --- 🧠 MEMORY INITIALIZATION ---
 KEYS = [
@@ -361,3 +361,4 @@ if st.session_state["generated_doc"]:
         file_name=f"Contract_{safe_name}.docx",
         mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     )
+
