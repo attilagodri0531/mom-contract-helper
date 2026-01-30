@@ -276,11 +276,20 @@ if st.button("🚀 Generate Contract / 生成合同", type="primary"):
     doc = DocxTemplate(template_path)
 
     def fmt_money(val: float, currency_choice: str) -> str:
-        if float(val) == 0.0:
-            return "0"
+        v = float(val)
+
+        # If it's an integer amount, show it as an int (200 not 200.00)
+        if v.is_integer():
+            if v == 0:
+                return "0"
+            if currency_choice == "HUF (Ft)":
+                return f"{int(v):,}".replace(",", ".")
+            return str(int(v))  # EUR integer
+    # Otherwise keep decimals (EUR) / or round (HUF)
         if currency_choice == "HUF (Ft)":
-            return f"{val:,.0f}".replace(",", ".")
-        return f"{val:,.2f}"
+            return f"{v:,.0f}".replace(",", ".")
+        return f"{v:,.2f}"
+
 
     if currency == "HUF (Ft)":
         curr_suf, text_suf = "Ft", "forint"
@@ -361,4 +370,3 @@ if st.session_state["generated_doc"]:
         file_name=f"Contract_{safe_name}.docx",
         mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     )
-
